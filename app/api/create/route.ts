@@ -1,5 +1,6 @@
 import { Redis } from '@upstash/redis'
 import { nanoid } from 'nanoid'
+import { NextResponse } from 'next/server';
 
 const redis = new Redis({
   url: 'https://usw1-fitting-swine-33716.upstash.io',
@@ -7,9 +8,11 @@ const redis = new Redis({
 })
 
 export async function POST(req: Request) {
-    const { body } = await req.json();
+    const { musing } = await req.json();
 
-    console.log(body)
+    console.log(musing, "m-m-m-musingggg")
 
-    await redis.set(nanoid(), body)
+    await redis.set(nanoid(), musing)
+
+    return NextResponse.json({ status: 200, body: "Success" })
 }
