@@ -1,8 +1,5 @@
 import { redis } from "@/lib/upstash";
 import { format } from "date-fns";
-import Image from "next/image";
-
-import link from "@/public/link.svg";
 
 export default async function MusingPage({
   params,
