@@ -1,6 +1,4 @@
-import Image from "next/image";
 import Link from "next/link";
-import { Redis } from "@upstash/redis";
 import { format } from "date-fns";
 import { redis } from "@/lib/upstash";
 
@@ -16,12 +14,11 @@ export default async function Home() {
   console.log(musings, "asdasdasdasdasd");
 
   return (
-    <div className="grid justify-center place-items-center break-words">
-      <div className="mt-32 max-w-2xl">
-        asduhfiausdhfuyadhsfauisdfhasdfhoasdfloasdhfladosfhiaaskdfgasjdhfjahsdfyashdbfkuyasdhfasydfgaskdhfsudhflayfiuaosdfhliadfsylhaisydfyasdflasdfhy
+    <div className="grid justify-center place-items-center break-words w-full">
+      <div className="mt-32 max-w-2xl w-full">
         {musings.map((musing, i) => (
           <Link href={`/${musing.key}`} key={i}>
-            <div className="flex justify-between">
+            <div className="flex justify-between w-full">
               <h1>{musing.data.title}</h1>
               <p>
                 {format(

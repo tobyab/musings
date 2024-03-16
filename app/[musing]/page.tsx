@@ -1,4 +1,8 @@
 import { redis } from "@/lib/upstash";
+import { format } from "date-fns";
+import Image from "next/image";
+
+import link from "@/public/link.svg";
 
 export default async function MusingPage({
   params,
@@ -13,12 +17,16 @@ export default async function MusingPage({
   const musings = (await getMusings(params.musing)) as Array<any>;
 
   return (
-    <div>
+    <div className="max-w-2xl">
       {musings.map((musing, i) => (
         <div key={i} className="">
-          <h1>{musing.title}</h1>
-          <h1>{musing.musing}</h1>
-          <h1>{musing.createdAt}</h1>
+          <div className="mb-8">
+            <h1 className="text-2xl font-medium mb-2">{musing.title}</h1>
+            <p className="text-sm text-[#BBBBBB]">
+              {format(new Date(musing.createdAt as string), "MMMM d yyyy")}
+            </p>
+          </div>
+          <p className="text-lg">{musing.musing}</p>
         </div>
       ))}
     </div>
