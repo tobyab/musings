@@ -5,14 +5,20 @@ import back from "@/public/back.svg";
 
 export default function Layout({ children }: any) {
   return (
-    <div className="mt-16 grid justify-center place-items-center">
+    <div className="mt-8">
       <div>
-        <Link href="/">
-          <p className="mb-8 flex space-x-2">
-            <Image src={back} alt="Back arrow" />
-            <span>Musings</span>
-          </p>
-        </Link>
+        <div className="mb-16 flex justify-between space-x-2">
+          <Link href="/" className="self-center">
+            Toby&apos;s musings
+          </Link>
+          <Link href="https://twitter.com/developedbytoby">
+            <img
+              src="https://github.com/tobyab.png"
+              className="h-8 w-8 rounded-full border"
+            />
+          </Link>
+        </div>
+
         {children}
       </div>
     </div>

@@ -7,12 +7,25 @@ export const runtime = "edge";
 
 export async function POST(req: Request) {
   const { musing, title } = await req.json();
+  const authHeader = req.headers.get("Authorization");
 
-  await redis.set(nanoid(5), {
-    musing: musing,
-    title: title,
-    createdAt: new Date().toISOString(),
-  });
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return new Response("Missing or invalid Authorization header", {
+      status: 401,
+    });
+  }
 
-  return NextResponse.json({ status: 200, body: "Success" });
+  const token = authHeader.split(" ")[1];
+
+  if (token !== process.env.TOKEN) {
+    return NextResponse.json({ status: 401, body: "Authenticate!" });
+  } else {
+    await redis.set(nanoid(5), {
+      musing: musing,
+      title: title,
+      createdAt: new Date().toISOString(),
+    });
+
+    return NextResponse.json({ status: 200, body: "Success" });
+  }
 }

@@ -21,12 +21,12 @@ export default async function MusingPage({
       {musings.map((musing, i) => (
         <div key={i} className="">
           <div className="mb-8">
-            <h1 className="text-2xl font-medium mb-2">{musing.title}</h1>
+            <h1 className="font-medium mb-2">{musing.title}</h1>
             <p className="text-sm text-[#BBBBBB]">
               {format(new Date(musing.createdAt as string), "MMMM d yyyy")}
             </p>
           </div>
-          <p className="text-lg">{musing.musing}</p>
+          <p className="text-[#7b7b7b]">{musing.musing}</p>
         </div>
       ))}
     </div>
