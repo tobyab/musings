@@ -1,7 +1,7 @@
-export default function MusingLayout() {
+export default function Layout({ children }: any) {
   return (
-    <div>
-      <p>lao=yo</p>
+    <div className="flex flex-col items-center justify-center min-h-screen py-2">
+      {children}
     </div>
   );
 }

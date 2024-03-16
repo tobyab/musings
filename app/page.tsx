@@ -2,36 +2,37 @@ import Image from "next/image";
 import Link from "next/link";
 import { Redis } from "@upstash/redis";
 import { format } from "date-fns";
-
-const redis = new Redis({
-  url: "https://usw1-fitting-swine-33716.upstash.io",
-  token: process.env.UPSTASH_TOKEN as string,
-});
+import { redis } from "@/lib/upstash";
 
 export default async function Home() {
   async function getMusings() {
     const keys = await redis.keys("*");
-    return await redis.mget(...keys);
+    const values = await redis.mget(...keys);
+
+    return keys.map((key, i) => ({ key, data: values[i] }));
   }
 
-  const musings = (await getMusings()) as Array<{
-    title: string;
-    musing: string;
-    createdAt: String;
-  }>;
-
-  console.log(musings);
+  const musings = (await getMusings()) as Array<any>;
+  console.log(musings, "asdasdasdasdasd");
 
   return (
-    <div className="max-w-2xl bg-blue-400 place-items-center ">
-      {musings.map((musing, i) => (
-        <Link href={`/${encodeURIComponent(musing.title)}`}>
-          <div key={i} className="flex justify-between  bg-red-400 w-full">
-            <h1>{musing.title}</h1>
-            <p>{format(new Date(musing.createdAt as string), "MMMM d yyyy")}</p>
-          </div>
-        </Link>
-      ))}
+    <div className="grid justify-center place-items-center break-words">
+      <div className="mt-32 max-w-2xl">
+        asduhfiausdhfuyadhsfauisdfhasdfhoasdfloasdhfladosfhiaaskdfgasjdhfjahsdfyashdbfkuyasdhfasydfgaskdhfsudhflayfiuaosdfhliadfsylhaisydfyasdflasdfhy
+        {musings.map((musing, i) => (
+          <Link href={`/${musing.key}`} key={i}>
+            <div className="flex justify-between">
+              <h1>{musing.data.title}</h1>
+              <p>
+                {format(
+                  new Date(musing.data.createdAt as string),
+                  "MMMM d yyyy",
+                )}
+              </p>
+            </div>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }
