@@ -1,4 +1,3 @@
-import { Redis } from "@upstash/redis";
 import { nanoid } from "nanoid";
 import { NextResponse } from "next/server";
 import { redis } from "@/lib/upstash";
@@ -20,7 +19,7 @@ export async function POST(req: Request) {
   if (token !== process.env.TOKEN) {
     return NextResponse.json({ status: 401, body: "Authenticate!" });
   } else {
-    await redis.set(nanoid(5), {
+    await redis.set(`musing:${nanoid(5)}`, {
       musing: musing,
       title: title,
       createdAt: new Date().toISOString(),

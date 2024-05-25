@@ -6,12 +6,12 @@ export default async function MusingPage({
 }: {
   params: { musing: string };
 }) {
-  async function getMusings(value: string) {
-    const keys = await redis.keys(value);
+  async function getMusings() {
+    const keys = await redis.keys(`musing:${params.musing}`);
     return await redis.mget(...keys);
   }
 
-  const musings = (await getMusings(params.musing)) as Array<any>;
+  const musings = (await getMusings()) as Array<any>;
 
   return (
     <div className="max-w-2xl">

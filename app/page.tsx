@@ -2,13 +2,17 @@ import Link from "next/link";
 import { format } from "date-fns";
 import { redis } from "@/lib/upstash";
 
-export default async function Home() {
-  async function getMusings() {
-    const keys = await redis.keys("*");
-    const values = await redis.mget(...keys);
+async function getMusings() {
+  const keys = await redis.keys("musing:*");
+  const values = await redis.mget(...keys);
 
-    return keys.map((key, i) => ({ key, data: values[i] }));
-  }
+  const musings: Array<any> = keys.map((key, i) => ({ key, data: values[i] }));
+  musings.sort((a, b) => new Date(a.data.createdAt).getTime() - new Date(b.data.createdAt).getTime());
+
+  return musings;
+}
+
+export default async function Home() {
   const musings = (await getMusings()) as Array<any>;
 
   return (
@@ -18,7 +22,7 @@ export default async function Home() {
           <h2 className="font-medium mb-4">Updates</h2>
           {musings
             .map((musing, i) => (
-              <Link href={`/${musing.key}`} key={i}>
+              <Link href={`/${musing.key.replace("musing:", "")}`} key={i}>
                 <div className="flex justify-between space-x-4 my-2">
                   <h2 className="font-">{musing.data.title}</h2>
                   <p className="text-sm text-[#BBBBBB] self-center">
